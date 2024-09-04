@@ -10,6 +10,7 @@ var smsIdentifier = '';
 var mobileInvalid = false;
 
 class StepTwo extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,12 +27,13 @@ class StepTwo extends React.Component {
         const sourceValue = queryParams.get('source');
         this.setState({ sourceValue });
     }
-
+    
     handleSourceChange = (event) => {
-        const value = event.target.value;
+        const sourceValue = event.target.value;
+        this.setState({ sourceValue });
         const utmData = getCookie('msg91_query');
-        if (utmData.includes('&source')) {
-            setCookie('msg91_query', utmData.replace(/&source=([\w_-])+/, '&source=' + sourceValue), 30);
+        if (utmData.includes('&source=')) {
+            setCookie('msg91_query', utmData.replace(/&source=([\w_-])*/, '&source=' + sourceValue), 30);
         } else {
             setCookie('msg91_query', utmData + '&source=' + sourceValue, 30);
         }
@@ -243,6 +245,7 @@ class StepTwo extends React.Component {
                             aria-label="Select Source"
                             name="source"
                             onChange={this.handleSourceChange}
+                            value={this.state.sourceValue}
                         >
                             <option value="">Select Source</option>
                             <option value="search_engine">Search engine (Google, Bing, Yahoo, etc)</option>
